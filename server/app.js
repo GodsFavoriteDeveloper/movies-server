@@ -8,7 +8,7 @@ const moviesRoutes = require('./routes/movies-routes');
 const app = express();
 // mongodb+srv://normy:saber24teeth@mean-gxsi7.mongodb.net/mean-stack?retryWrites=true&w=majority
 mongoose.connect(
-    'mongodb://localhost:27017/movies', {
+    'mongodb+srv://ndube1989:saber24teeth@movies-icwdd.mongodb.net/test?retryWrites=true&w=majority/movies', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
