@@ -6,7 +6,7 @@ const moviesRoutes = require('./routes/movies-routes');
 
 const app = express();
 mongoose.connect(
-    'mongodb+srv://ndube1989:saber24teeth@movies-icwdd.mongodb.net/test?retryWrites=true&w=majority/movies', {
+    'mongodb+srv://ndube1989:saber24teeth@movies-icwdd.mongodb.net/movies?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
