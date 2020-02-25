@@ -30,7 +30,10 @@ router.put('/:movieId', (req, res, next) => {
     const movie = new Movie({
         _id: req.body._id,
         title: req.body.title,
-        content: req.body.content
+        plot: req.body.plot,
+        year: req.body.year,
+        poster: req.body.poster,
+        runtime: req.body.runtime
     });
     // Movie.deleteOne({_id: req.body._id}).then(() => {
     //     movie.save().then((movie)=>{
