@@ -1,0 +1,25 @@
+{
+  "name": "mean",
+  "version": "1.0.0",
+  "description": "A mean stack project",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "mean",
+    "stack",
+    "angular",
+    "express",
+    "mongodb"
+  ],
+  "author": "Norman Dube",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.3.5",
+    "mongoose": "^5.7.14",
+    "nodemailer": "^6.4.2",
+    "passport": "^0.4.1"
+  }
+}
