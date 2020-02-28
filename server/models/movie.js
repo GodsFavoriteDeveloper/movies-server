@@ -5,7 +5,8 @@ const movieSchema = mongoose.Schema({
     plot: { type: String, required: true },
     year: { type: String, required: true },
     poster: { type: String, required: true },
-    runtime: { type: String, required: true }
+    runtime: { type: String, required: true },
+    genre: { type: String, required: true },
 })
 
 module.exports = mongoose.model('Movie', movieSchema);

@@ -7,12 +7,14 @@ const Movie = require('../models/movie');
 
 
 router.post('' ,(req, res, next) => {
+    console.log(req);
     const movie = new Movie({
         title: req.body.title,
         plot: req.body.plot,
         year: req.body.year,
         poster: req.body.poster,
-        runtime: req.body.runtime
+        runtime: req.body.runtime,
+        genre: req.body.genre
     });
     movie.save().then((movie)=>{
         res.status(201).json({
@@ -33,7 +35,8 @@ router.put('/:movieId', (req, res, next) => {
         plot: req.body.plot,
         year: req.body.year,
         poster: req.body.poster,
-        runtime: req.body.runtime
+        runtime: req.body.runtime,
+        genre: req.body.genre
     });
     // Movie.deleteOne({_id: req.body._id}).then(() => {
     //     movie.save().then((movie)=>{
@@ -87,9 +90,31 @@ router.get('/:movieId', (req, res, next) => {
     })
 })
 
+router.get('/search/:movieName', (req, res, next) => {
+    Movie.find({title: req.params.movieName}).then(movie => {
+        console.log(movie);
+        if (movie) {
+            res.status(200).json(movie);
+        } else {
+            res.status(404).json({message: 'Movie not found'})
+        }
+    })
+})
+
+router.get('/genre/:genreName', (req, res, next) => {
+    Movie.find({genre: req.params.genreName}).then(movies => {
+        console.log(movies);
+        if (movies) {
+            res.status(200).json(movies);
+        } else {
+            res.status(404).json({message: 'Movies not found'})
+        }
+    })
+})
+
 router.delete('/:movieId', (req, res, next) => {
     const pid = req.params.movieId;
-    Movie.deleteOne({_id: pid}).then(() => {
+    Movie.deleteMany().then(() => {
         res.status(200).json({
             message: "Movie deleted successfully" 
         })
