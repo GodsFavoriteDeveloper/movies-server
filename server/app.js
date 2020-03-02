@@ -6,10 +6,13 @@ const userRoutes = require('./routes/user-routes');
 
 
 const app = express();
+const devDbLink = 'mongodb://localhost:27017/movies';
+const prodDbLink = 'mongodb+srv://ndube1989:saber24teeth@movies-icwdd.mongodb.net/movies?retryWrites=true&w=majority';
 mongoose.connect(
-    'mongodb+srv://ndube1989:saber24teeth@movies-icwdd.mongodb.net/movies?retryWrites=true&w=majority', {
+    prodDbLink, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true,
     })
 .then(data => {
     console.log('success')

@@ -7,6 +7,8 @@ const movieSchema = mongoose.Schema({
     poster: { type: String, required: true },
     runtime: { type: String, required: true },
     genre: { type: String, required: true },
+    creator: { type: String, required: true },
+    createdDate: { type: Date, required: true }
 })
 
 module.exports = mongoose.model('Movie', movieSchema);

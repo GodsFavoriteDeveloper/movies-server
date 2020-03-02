@@ -1,8 +1,5 @@
-// import Express Framework
 const express = require('express');
-// Import router feature of Express
 const router = express.Router();
-// Import Mongoose model that allows us to define types
 const Movie = require('../models/movie');
 
 
@@ -14,7 +11,9 @@ router.post('' ,(req, res, next) => {
         year: req.body.year,
         poster: req.body.poster,
         runtime: req.body.runtime,
-        genre: req.body.genre
+        genre: req.body.genre,
+        creator: req.body.creator,
+        createdDate: req.body.createdDate
     });
     movie.save().then((movie)=>{
         res.status(201).json({
@@ -28,16 +27,19 @@ router.post('' ,(req, res, next) => {
     
 })
 
+
 router.put('/:movieId', (req, res, next) => {
-    const movie = new Movie({
-        _id: req.body._id,
+    const response = res;
+    const movie = {
+        //_id: req.body._id,
         title: req.body.title,
         plot: req.body.plot,
         year: req.body.year,
         poster: req.body.poster,
         runtime: req.body.runtime,
-        genre: req.body.genre
-    });
+        genre: req.body.genre,
+        createdDate: req.body.createdDate
+    };
     // Movie.deleteOne({_id: req.body._id}).then(() => {
     //     movie.save().then((movie)=>{
     //         res.status(201).json({
@@ -46,30 +48,45 @@ router.put('/:movieId', (req, res, next) => {
     //         });
     //     });
     // })
-    Movie.updateOne({_id: req.params.movieId, movie})
-    .then((res) => {
-        console.log(res);
-        res.status(200).json({
-            message: "Movie Updated!!!"
-        })
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json({message: err})
-    })
+    Movie.updateOne(
+        {createdDate: req.body.createdDate},
+        {$set: movie},
+        (err, raw) => {
+            console.log(err);
+            console.log(raw)
+            if (raw) {
+                response.status(200).send(raw)
+            } else {
+                response.status(500).send('error');
+            }
+        }
+        )
+    // .then((res) => {
+    //     console.log(res);
+    //     res.status(200).json({
+    //         message: "Movie Updated!!!"
+    //     })
+    // }).catch(err => {
+    //     console.log(err);
+    //     res.status(500).json({message: err})
+    // })
 })
 
 router.get('', (req, res, next) => {
-    const pageSize = +req.query.pagesize;
-    const currentPage = +req.query.page;
+    const genre = req.query.genre;
+    const creator = req.query.creator;
     const movieQuery = Movie.find();
     let fetchedMovies;
 
-    if (pageSize && currentPage) {
-        movieQuery
-        .skip(pageSize * (currentPage -  1))
-        .limit(pageSize)
-        .where()
+    if (genre) {
+        movieQuery.where({genre: genre})
     }
+
+    if (creator) {
+        movieQuery.where({creator: creator})
+    }
+
+    movieQuery.sort({createdDate: 'descending'});
 
     movieQuery
     .then(movies => {
@@ -90,35 +107,15 @@ router.get('/:movieId', (req, res, next) => {
     })
 })
 
-router.get('/search/:movieName', (req, res, next) => {
-    Movie.find({title: req.params.movieName}).then(movie => {
-        console.log(movie);
-        if (movie) {
-            res.status(200).json(movie);
-        } else {
-            res.status(404).json({message: 'Movie not found'})
-        }
-    })
-})
-
-router.get('/genre/:genreName', (req, res, next) => {
-    Movie.find({genre: req.params.genreName}).then(movies => {
-        console.log(movies);
-        if (movies) {
-            res.status(200).json(movies);
-        } else {
-            res.status(404).json({message: 'Movies not found'})
-        }
-    })
-})
-
 router.delete('/:movieId', (req, res, next) => {
-    const pid = req.params.movieId;
-    Movie.deleteMany().then(() => {
+    const movieID = req.params.movieId;
+    Movie.findByIdAndDelete(movieID).then(() => {
         res.status(200).json({
             message: "Movie deleted successfully" 
         })
         console.log('successfully deleted')
+    }).catch(() => {
+        res.send('Failed To Delete')
     })
 })
 
