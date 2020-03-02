@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moviesRoutes = require('./routes/movies-routes');
 const userRoutes = require('./routes/user-routes');
+const cors = require('cors')
 
 
 const app = express();
@@ -20,6 +21,7 @@ mongoose.connect(
     console.log('err')
 })
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
