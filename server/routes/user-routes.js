@@ -6,6 +6,15 @@ const User = require("../models/user");
 
 const router = express.Router();
 
+router.get('', (req, res, next) => {
+    User.find()
+    .then(users => {
+        res.status(200).json(users); 
+    }).catch(err => {
+        res.send('Error fetching movies')
+    });    
+})
+
 router.post("/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
